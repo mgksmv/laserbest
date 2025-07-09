@@ -1,0 +1,233 @@
+.timeline-table {
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+
+  &__days {
+    display: flex;
+    border-bottom: 1px solid var(--secondary);
+    gap: 8px;
+  }
+
+  &__day {
+    padding: 8px;
+    width: calc(100% / 7);
+    text-align: center;
+
+    &--empty {
+      width: 80px;
+      flex-shrink: 0;
+    }
+  }
+
+  &__content {
+    display: flex;
+    gap: 8px;
+  }
+
+  &__intervals {
+    width: 80px;
+    padding-top: 8px;
+    border-right: 1px solid var(--secondary);
+  }
+
+  &__interval {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    text-align: end;
+
+    & > div {
+      height: 30px;
+      padding: 8px;
+      color: #aaaaaa;
+      font-weight: 300;
+      display: flex;
+      justify-content: end;
+      align-items: center;
+
+      &:first-child {
+        gap: 4px;
+      }
+
+      span {
+        font-size: 22px;
+        color: var(--primary);
+        font-weight: 400;
+      }
+    }
+  }
+
+  &__list {
+    width: 100%;
+    padding-top: 12px;
+    display: flex;
+    gap: 12px;
+  }
+
+  &__list-day {
+    width: calc(100% / 7);
+    position: relative;
+  }
+
+  &__record {
+    position: absolute;
+    right: 0;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0px 0px 0px 1px rgba(50, 50, 50, 0.05);
+
+    &-description {
+      color: #222222;
+    }
+
+    &--smaller {
+      & > * {
+        font-size: 8px !important;
+      }
+    }
+
+    &__status {
+      &__waiting {
+        .timeline-table__record-time {
+          background: #0cb693;
+
+          .timeline-table__icon {
+            background-image: url('@/assets/images/patients-item-time-icon-waiting.svg');
+            filter: brightness(0) invert(1);
+          }
+        }
+
+        .timeline-table__record-description {
+          background: rgb(212, 250, 239);
+        }
+      }
+
+      &__confirmed {
+        .timeline-table__record-time {
+          background: rgb(161, 149, 244);
+
+          .timeline-table__icon {
+            background-image: url('@/assets/images/patients-item-time-icon-confirmed.svg');
+          }
+        }
+
+        .timeline-table__record-description {
+          background: rgb(220, 212, 250);
+        }
+      }
+
+      &__completed {
+        .timeline-table__record-time {
+          background: rgb(238, 138, 95);
+
+          .timeline-table__icon {
+            background-image: url('@/assets/images/patients-item-time-icon-completed.svg');
+          }
+        }
+
+        .timeline-table__record-description {
+          background: rgb(245, 193, 170);
+        }
+      }
+
+      &__cancelled {
+        .timeline-table__record-time {
+          background: rgb(241, 148, 170);
+
+          .timeline-table__icon {
+            background-image: url('@/assets/images/patients-item-time-icon-cancelled.svg');
+          }
+        }
+
+        .timeline-table__record-description {
+          background: rgb(246, 181, 196);
+        }
+      }
+
+      &__warned {
+        .timeline-table__record-time {
+          background: rgb(238, 202, 107);
+
+          .timeline-table__icon {
+            background-image: url('@/assets/images/patients-item-time-icon-warned.svg');
+          }
+        }
+
+        .timeline-table__record-description {
+          background: rgb(252, 238, 211);
+        }
+      }
+    }
+
+    /*&:hover {
+            height: 100% !important;
+            overflow: visible;
+            z-index: 11;
+            box-shadow: 0px 0px 5px 1px rgba(0,0,0,.4);
+            & > * {
+                opacity: 1;
+            }
+        }*/
+  }
+
+  &__record-time {
+    font-size: 10px;
+    line-height: 110%;
+    background: #0cb693;
+    padding: 0 3px;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    white-space: nowrap;
+    position: relative;
+
+    .timeline-table__icon {
+      width: 11px;
+      height: 11px;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+    }
+  }
+
+  &__record-description {
+    background: #8ddccb;
+    height: 100%;
+    font-size: 10px;
+    line-height: 110%;
+    padding: 2px 3px;
+    color: #414a56;
+    font-weight: bold;
+    white-space: pre-wrap;
+
+    .new-patient-badge {
+      margin-right: 0;
+      color: $white;
+      background: #2a4e83;
+      border-radius: 4px;
+      padding: 0 3px;
+      font-size: 9px;
+      font-weight: 400;
+    }
+  }
+
+  &__list-hour {
+    /*&:nth-child(1) span:nth-child(1) {
+            box-shadow: inset 0 1px lighten($anti-flash-white, 0.5%);
+        }*/
+    span {
+      height: 15px;
+      display: block;
+      width: 100%;
+      //&:nth-child(4), &:nth-child(2), &:nth-child(3) {
+      box-shadow: inset 0 1px lighten($anti-flash-white, 0.5%);
+      //}
+      /*&:nth-child(1) {
+                box-shadow: inset 0 1px darken($anti-flash-white, 4%);
+            }*/
+    }
+  }
+}

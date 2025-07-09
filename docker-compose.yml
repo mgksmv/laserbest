@@ -1,0 +1,88 @@
+services:
+  traefik:
+    image: traefik:3.4
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    command:
+      - --providers.docker=true
+      - --providers.docker.exposedByDefault=false
+      - --entryPoints.web.address=:80
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik_public
+    networks:
+      - default
+      - traefik_public
+
+  app-nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    restart: unless-stopped
+    volumes:
+      - .:/app
+      - storage:/app/storage/app
+    environment:
+      DOMAIN: localhost
+    labels:
+      - traefik.enable=true
+      - traefik.docker.network=traefik_public
+      - traefik.http.routers.appNginx.rule=Host(`localhost`) || Host(`unique-osprey-mighty.ngrok-free.app`)
+      - traefik.http.routers.appNginx.entryPoints=web
+      - traefik.http.services.appNginx.loadBalancer.server.port=80
+    networks:
+      - default
+      - traefik_public
+
+  app-php-fpm:
+    build:
+      context: .
+      dockerfile: docker/php-fpm/Dockerfile
+    restart: unless-stopped
+    volumes:
+      - .:/app
+      - storage:/app/storage/app
+    depends_on:
+      - db
+    networks:
+      - default
+
+  app-node:
+    build:
+      context: .
+      dockerfile: docker/node/Dockerfile
+    volumes:
+      - .:/app
+    ports:
+      - "5173:5173"
+    command: sh -c "until [ -f .ready ]; do sleep 1; done && npm run dev"
+    depends_on:
+      - app-php-fpm
+    networks:
+      - default
+
+  db:
+    image: mysql:9.2
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_USER: ${DB_USERNAME}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - db:/var/lib/mysql
+    networks:
+      - default
+
+networks:
+  traefik_public:
+  default:
+
+volumes:
+  storage:
+  db:
