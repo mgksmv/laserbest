@@ -15,6 +15,6 @@ class TestCommand extends Command
     {
         $api = new CService();
 
-        dd($api->getVisites());
+        dd($api->getVisits());
     }
 }
