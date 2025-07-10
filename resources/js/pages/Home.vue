@@ -24,9 +24,9 @@ const breadcrumbs: BreadcrumbItem[] = [
 
 const visitModal = useModal();
 
-function formatDate(date: string) {
-    return moment(date).format('D MMM YYYY');
-}
+// function formatDate(date: string) {
+//     return moment(date).format('D MMM YYYY');
+// }
 
 function getHoursFromTimeInterval(timeInterval: string) {
     return moment(timeInterval, 'HH:mm').format('HH');
@@ -46,19 +46,19 @@ function getSlotTime(startTime: string, slotOffset: number) {
     return moment(startTime, 'HH:mm').add(slotOffset * 5, 'minutes').format('HH:mm');
 }
 
-function getRecordClasses(record: any) {
-    const classes = ['timeline-table__record'];
-
-    if (record.is_smaller) {
-        classes.push('timeline-table__record--smaller');
-    }
-
-    if (record.status_class_name) {
-        classes.push(record.status_class_name);
-    }
-
-    return classes.join(' ');
-}
+// function getRecordClasses(record: any) {
+//     const classes = ['timeline-table__record'];
+//
+//     if (record.is_smaller) {
+//         classes.push('timeline-table__record--smaller');
+//     }
+//
+//     if (record.status_class_name) {
+//         classes.push(record.status_class_name);
+//     }
+//
+//     return classes.join(' ');
+// }
 </script>
 
 <template>
