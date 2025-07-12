@@ -42,9 +42,20 @@ class HomeService
             $servicesAsString = '';
 
             foreach ($visit['services'] as $serviceIndex => $service) {
-                $servicesAsString .= $service['service']['title'] . '. ';
+                $servicesAsString .= $service['service']['title'];
 
-                if ($serviceIndex === 0) {
+                if (count($visit['services']) - 1 !== $serviceIndex) {
+                    $servicesAsString .= '.' . PHP_EOL;
+                } else {
+                    $servicesAsString .= '.';
+                }
+
+                if (count($visit['services']) === 1) {
+                    $startDate = $service['start_date'];
+                    $startHours = Carbon::parse($service['start_date'])->format('H:i');
+                    $endDate = $service['end_date'];
+                    $endHours = Carbon::parse($service['end_date'])->format('H:i');
+                } elseif ($serviceIndex === 0) {
                     $startDate = $service['start_date'];
                     $startHours = Carbon::parse($service['start_date'])->format('H:i');
                 } elseif ($serviceIndex === count($visit['services']) - 1) {
@@ -54,17 +65,13 @@ class HomeService
             }
 
             $visits[$index]['services_as_string'] = $servicesAsString;
-            $visits[$index]['height'] = Carbon::parse($startDate)->diffInMinutes(Carbon::parse($endDate), true);
-            $visits[$index]['top'] = Carbon::parse($startDate)->diffInMinutes(Carbon::parse($startTime), true);
-            $visits[$index]['start_hours'] = Carbon::parse($startDate)->format('H:i');
-            $visits[$index]['end_hours'] = Carbon::parse($endDate)->format('H:i');
-
-            $visits[$index]['top'] *= $multiplier;
-            $visits[$index]['height'] *= $multiplier;
+            $visits[$index]['height'] = Carbon::parse($startDate)->diffInMinutes(Carbon::parse($endDate), true) * $multiplier;
+            $visits[$index]['top'] = Carbon::parse($startDate)->diffInMinutes(Carbon::parse($startTime), true) * $multiplier;
+            $visits[$index]['start_hours'] = $startHours;
+            $visits[$index]['end_hours'] = $endHours;
             $visits[$index]['nesting'] = 0;
 
             $bookStaffIndex = array_find_key($bookStaff, fn($staff) => $staff['id'] === $staffId);
-
             if (!is_null($bookStaffIndex)) {
                 $bookStaff[$bookStaffIndex]['visits'][] = $visits[$index];
             }
@@ -83,50 +90,14 @@ class HomeService
                         if (
                             $visit['id'] != $lastInterval['visit_id']
                             && strtotime($visit['start_hours']) >= strtotime($lastInterval['start_hours'])
+                            && strtotime($visit['end_hours']) <= strtotime($lastInterval['end_hours'])
                         ) {
                             $bookStaff[$staffIndex]['visits'][$visitIndex]['nesting'] += 10;
-
-                            // $bookStaffIndex = array_find_key($bookStaff, fn($staff) => $staff['id'] === $staff['id']);
-                            //
-                            // if (!is_null($bookStaffIndex)) {
-                            //     $bookStaff[$bookStaffIndex]['visits'][] = $visits[$index];
-                            // }
                         }
                     }
                 }
             }
         }
-
-        // dd($bookStaff);
-
-        // foreach ($visits as $index => $visit) {
-        //     $staffId = $visit['services'][0]['staff']['id'] ?? null;
-        //     if (!$staffId) {
-        //         continue;
-        //     }
-        //
-        //     dump('visit id: '.$visit['id']);
-        //
-        //     foreach ($recordsIntervals[$staffId] as $lastInterval) {
-        //         dump($lastInterval['visit_id']);
-        //         if (
-        //             $visit['id'] != $lastInterval['visit_id']
-        //             && strtotime($visit['start_hours']) >= strtotime($lastInterval['start_hours'])
-        //             && strtotime($visit['end_hours']) <= strtotime($lastInterval['end_hours'])
-        //         ) {
-        //             $visits[$index]['nesting'] += 10;
-        //
-        //             $bookStaffIndex = array_find_key($bookStaff, fn($staff) => $staff['id'] === $staffId);
-        //
-        //             if (!is_null($bookStaffIndex)) {
-        //                 $bookStaff[$bookStaffIndex]['visits'][] = $visits[$index];
-        //             }
-        //         }
-        //     }
-        //     die;
-        // }
-        // die;
-        // dd($bookStaff);
 
         return $bookStaff;
     }

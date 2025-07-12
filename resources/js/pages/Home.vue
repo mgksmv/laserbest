@@ -116,7 +116,9 @@ function getSlotTime(startTime: string, slotOffset: number) {
                                     </div>
                                     <div class="timeline-table__record-description">
                                         <p class="client-name">{{ visit.client.name }}</p>
-                                        <p v-for="phone in visit.client.phones" :key="phone">{{ phone }}</p>
+                                        <p v-for="phone in visit.client.phones" :key="phone">
+                                            📞 {{ phone }}
+                                        </p>
                                         <p>{{ visit.services_as_string }}</p>
                                     </div>
                                 </div>
@@ -128,31 +130,5 @@ function getSlotTime(startTime: string, slotOffset: number) {
         </div>
 
         <VisitModal v-if="visitModal.isOpened.value" @close-modal="visitModal.close" />
-
-        <!--        <Dialog :open="visitModal.isOpened.value">-->
-        <!--            <DialogContent>-->
-        <!--                <DialogHeader class="space-y-3">-->
-        <!--                    <DialogTitle>Are you sure you want to delete your account?</DialogTitle>-->
-        <!--                    <DialogDescription>-->
-        <!--                        Once your account is deleted, all of its resources and data will also be permanently deleted. Please enter your-->
-        <!--                        password to confirm you would like to permanently delete your account.-->
-        <!--                    </DialogDescription>-->
-        <!--                </DialogHeader>-->
-
-        <!--&lt;!&ndash;                <div class="grid gap-2">&ndash;&gt;-->
-        <!--&lt;!&ndash;                    <Label for="password" class="sr-only">Password</Label>&ndash;&gt;-->
-        <!--&lt;!&ndash;                    <Input id="password" type="password" name="password" ref="passwordInput" v-model="form.password" placeholder="Password" />&ndash;&gt;-->
-        <!--&lt;!&ndash;                    <InputError :message="form.errors.password" />&ndash;&gt;-->
-        <!--&lt;!&ndash;                </div>&ndash;&gt;-->
-
-        <!--                <DialogFooter class="gap-2">-->
-        <!--                    <DialogClose as-child>-->
-        <!--                        <Button variant="secondary" @click="visitModal.close"> Cancel </Button>-->
-        <!--                    </DialogClose>-->
-
-        <!--                    <Button type="submit" variant="destructive"> Delete account </Button>-->
-        <!--                </DialogFooter>-->
-        <!--            </DialogContent>-->
-        <!--        </Dialog>-->
     </AppLayout>
 </template>
