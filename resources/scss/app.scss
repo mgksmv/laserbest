@@ -70,7 +70,7 @@
     position: relative;
   }
 
-  &__record {
+  &__visit {
     position: absolute;
     right: 0;
     width: 100%;
@@ -80,6 +80,10 @@
 
     &:hover {
       box-shadow: 0 0 7px 1px rgba(0, 0, 0, 0.4);
+    }
+
+    &.expanded {
+      height: auto !important;
     }
 
     &-description {
@@ -94,7 +98,7 @@
 
     /*&__status {
       &__waiting {
-        .timeline-table__record-time {
+        .timeline-table__visit-time {
           background: #1ab394;
 
           .timeline-table__icon {
@@ -103,13 +107,13 @@
           }
         }
 
-        .timeline-table__record-description {
+        .timeline-table__visit-description {
           background: rgb(212, 250, 239);
         }
       }
 
       &__confirmed {
-        .timeline-table__record-time {
+        .timeline-table__visit-time {
           background: rgb(161, 149, 244);
 
           .timeline-table__icon {
@@ -117,13 +121,13 @@
           }
         }
 
-        .timeline-table__record-description {
+        .timeline-table__visit-description {
           background: rgb(220, 212, 250);
         }
       }
 
       &__completed {
-        .timeline-table__record-time {
+        .timeline-table__visit-time {
           background: rgb(238, 138, 95);
 
           .timeline-table__icon {
@@ -131,13 +135,13 @@
           }
         }
 
-        .timeline-table__record-description {
+        .timeline-table__visit-description {
           background: rgb(245, 193, 170);
         }
       }
 
       &__cancelled {
-        .timeline-table__record-time {
+        .timeline-table__visit-time {
           background: rgb(241, 148, 170);
 
           .timeline-table__icon {
@@ -145,13 +149,13 @@
           }
         }
 
-        .timeline-table__record-description {
+        .timeline-table__visit-description {
           background: rgb(246, 181, 196);
         }
       }
 
       &__warned {
-        .timeline-table__record-time {
+        .timeline-table__visit-time {
           background: rgb(238, 202, 107);
 
           .timeline-table__icon {
@@ -159,7 +163,7 @@
           }
         }
 
-        .timeline-table__record-description {
+        .timeline-table__visit-description {
           background: rgb(252, 238, 211);
         }
       }
@@ -176,7 +180,7 @@
         }*/
   }
 
-  &__record-time {
+  &__visit-time {
     font-size: 10px;
     line-height: 110%;
     background: #1ab394;
@@ -197,14 +201,13 @@
     }
   }
 
-  &__record-description {
+  &__visit-description {
     background: #8ddccb;
     height: 100%;
     font-size: 10px;
     line-height: 110%;
     padding: 2px 3px;
     color: #414a56;
-    white-space: pre-wrap;
 
     p:not(:last-child) {
       margin-bottom: 3px;
@@ -292,7 +295,7 @@
   }
 }
 
-.record-modal {
+.visit-modal {
   .modal__content {
     max-width: 1080px;
   }

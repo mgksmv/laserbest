@@ -5,7 +5,6 @@ import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import moment from 'moment';
 import { useModal } from '@/composables/useModal';
-// import PlaceholderPattern from '../components/PlaceholderPattern.vue';
 
 const props = defineProps({
     timeIntervals: Object,
@@ -23,10 +22,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const visitModal = useModal();
-
-// function formatDate(date: string) {
-//     return moment(date).format('D MMM YYYY');
-// }
 
 function getHoursFromTimeInterval(timeInterval: string) {
     return moment(timeInterval, 'HH:mm').format('HH');
@@ -46,19 +41,15 @@ function getSlotTime(startTime: string, slotOffset: number) {
     return moment(startTime, 'HH:mm').add(slotOffset * 5, 'minutes').format('HH:mm');
 }
 
-// function getRecordClasses(record: any) {
-//     const classes = ['timeline-table__record'];
-//
-//     if (record.is_smaller) {
-//         classes.push('timeline-table__record--smaller');
-//     }
-//
-//     if (record.status_class_name) {
-//         classes.push(record.status_class_name);
-//     }
-//
-//     return classes.join(' ');
-// }
+function handleVisitMouseenter(event: MouseEvent) {
+    const parent = event.target.closest('.timeline-table__visit');
+    parent.style.height = parent.scrollHeight + 'px';
+}
+
+function handleVisitMouseleave(event: MouseEvent, height: number) {
+    const parent = event.target.closest('.timeline-table__visit');
+    parent.style.height = height + 'px';
+}
 </script>
 
 <template>
@@ -100,26 +91,30 @@ function getSlotTime(startTime: string, slotOffset: number) {
                         <template v-if="staff.visits">
                             <template v-for="visit in staff.visits" :key="visit.id">
                                 <div
-                                    class="timeline-table__record"
+                                    class="timeline-table__visit"
                                     :style="`
                                         height: ${visit.height}px;
                                         top: ${visit.top}px;
                                         width: ${100 - visit.nesting}%;
                                     `"
+                                    @mouseenter="handleVisitMouseenter"
+                                    @mouseleave="handleVisitMouseleave($event, visit.height)"
                                 >
                                     <div
-                                        class="timeline-table__record-time"
+                                        class="timeline-table__visit-time"
                                         :style="visit.time_min_height ? 'min-height: 15px;' : null"
                                     >
                                         {{ visit.start_hours }}—{{ visit.end_hours }}
                                         <span class="timeline-table__icon" :title="visit.status_title"></span>
                                     </div>
-                                    <div class="timeline-table__record-description">
+                                    <div class="timeline-table__visit-description">
                                         <p class="client-name">{{ visit.client.name }}</p>
                                         <p v-for="phone in visit.client.phones" :key="phone">
                                             📞 {{ phone }}
                                         </p>
-                                        <p>{{ visit.services_as_string }}</p>
+                                        <p v-for="service in visit.services" :key="service">
+                                            {{ service }}
+                                        </p>
                                     </div>
                                 </div>
                             </template>

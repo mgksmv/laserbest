@@ -28,9 +28,6 @@ class HomeController extends Controller
 
         $visits = $this->CService->getVisits()->json()['Parameters'] ?? [];
         $bookStaff = $this->CService->getBookStaff()->json()['Parameters'] ?? [];
-        //dump($visits);
-        //dump($bookStaff);
-        //die();
         $bookStaff = $this->homeService->getBookStaffData($bookStaff, $visits, $startTime, $multiplier);
 
         return Inertia::render('Home', compact(
