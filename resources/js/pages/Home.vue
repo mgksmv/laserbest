@@ -5,14 +5,16 @@ import { type BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/vue3';
 import moment from 'moment';
 import { useModal } from '@/composables/useModal';
+import { BookStaff } from '@/types/bookStaff';
+import { Visit, VisitStatus } from '@/types/visit.d';
 
-const props = defineProps({
-    timeIntervals: Object,
-    partsOfHour: Number,
-    increaseInMinutes: Number,
-    slotsInOneHour: Number,
-    bookStaff: Object
-});
+const props = defineProps<{
+    timeIntervals: any,
+    partsOfHour: number,
+    increaseInMinutes: number,
+    slotsInOneHour: number,
+    bookStaff: BookStaff[],
+}>();
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -39,6 +41,33 @@ function getMinutesInterval(timeInterval: string, partOfHour: number) {
 
 function getSlotTime(startTime: string, slotOffset: number) {
     return moment(startTime, 'HH:mm').add(slotOffset * 5, 'minutes').format('HH:mm');
+}
+
+function getVisitClasses(visit: Visit) {
+    const classList = ['timeline-table__visit'];
+
+    switch (visit.status) {
+        case VisitStatus.Archival:
+            classList.push('archival');
+            break;
+        case VisitStatus.NotCame:
+            classList.push('not-came');
+            break;
+        case VisitStatus.Expected:
+            classList.push('expected');
+            break;
+        case VisitStatus.Came:
+            classList.push('came');
+            break;
+        case VisitStatus.Finished:
+            classList.push('finished');
+            break;
+        case VisitStatus.Canceled:
+            classList.push('canceled');
+            break;
+    }
+
+    return classList;
 }
 
 function handleVisitMouseenter(event: MouseEvent) {
@@ -91,7 +120,7 @@ function handleVisitMouseleave(event: MouseEvent, height: number) {
                         <template v-if="staff.visits">
                             <template v-for="visit in staff.visits" :key="visit.id">
                                 <div
-                                    class="timeline-table__visit"
+                                    :class="getVisitClasses(visit)"
                                     :style="`
                                         height: ${visit.height}px;
                                         top: ${visit.top}px;
@@ -112,8 +141,8 @@ function handleVisitMouseleave(event: MouseEvent, height: number) {
                                         <p v-for="phone in visit.client.phones" :key="phone">
                                             📞 {{ phone }}
                                         </p>
-                                        <p v-for="service in visit.services" :key="service">
-                                            {{ service }}
+                                        <p v-for="service in visit.services" :key="service.id">
+                                            {{ service.title }}
                                         </p>
                                     </div>
                                 </div>

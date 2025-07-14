@@ -40,12 +40,11 @@ class HomeService
 
             $visitServices = [];
 
-            foreach ($visit['services'] as $service) {
-                $serviceTitle = $service['service']['title'];
-                $startDate = $service['start_date'];
-                $endDate = $service['end_date'];
-                $startHours = Carbon::parse($service['start_date'])->format('H:i');
-                $endHours = Carbon::parse($service['end_date'])->format('H:i');
+            foreach ($visit['services'] as $visitService) {
+                $startDate = $visitService['start_date'];
+                $endDate = $visitService['end_date'];
+                $startHours = Carbon::parse($visitService['start_date'])->format('H:i');
+                $endHours = Carbon::parse($visitService['end_date'])->format('H:i');
 
                 $lastServiceKey = array_key_last($visitServices);
 
@@ -53,11 +52,11 @@ class HomeService
                     count($visitServices)
                     && $visitServices[$lastServiceKey]
                     && $visitServices[$lastServiceKey]['end_date'] === $startDate
-                    && $visitServices[$lastServiceKey]['staff_id'] === $service['staff']['id']
+                    && $visitServices[$lastServiceKey]['staff_id'] === $visitService['staff']['id']
                 ) {
                     $oldStartDate = $visitServices[$lastServiceKey]['start_date'];
 
-                    $visitServices[$lastServiceKey]['services'][] = $serviceTitle;
+                    $visitServices[$lastServiceKey]['services'][] = $visitService['service'];
                     $visitServices[$lastServiceKey]['end_date'] = $endDate;
                     $visitServices[$lastServiceKey]['end_hours'] = $endHours;
                     $visitServices[$lastServiceKey]['height'] = Carbon::parse($oldStartDate)
@@ -66,11 +65,11 @@ class HomeService
                             ->diffInMinutes(Carbon::parse($startTime), true) * $multiplier;
                 } else {
                     $visitServices[] = [
-                        'id' => Str::uuid(),
+                        'custom_id' => Str::uuid(),
                         'visit_id' => $visit['id'],
-                        'staff_id' => $service['staff']['id'],
+                        'staff_id' => $visitService['staff']['id'],
                         'client' => $visit['client'],
-                        'services' => [$serviceTitle],
+                        'services' => [$visitService['service']],
                         'start_date' => $startDate,
                         'end_date' => $endDate,
                         'start_hours' => $startHours,
@@ -85,16 +84,16 @@ class HomeService
                 }
             }
 
-            foreach ($visitServices as $service) {
-                $bookStaffIndex = array_find_key($bookStaff, fn($staff) => $staff['id'] === $service['staff_id']);
+            foreach ($visitServices as $visitService) {
+                $bookStaffIndex = array_find_key($bookStaff, fn($staff) => $staff['id'] === $visitService['staff_id']);
                 if (!is_null($bookStaffIndex)) {
-                    $bookStaff[$bookStaffIndex]['visits'][] = $service;
+                    $bookStaff[$bookStaffIndex]['visits'][] = $visitService;
                 }
 
-                $visitIntervals[$service['staff_id']][] = [
-                    'id' => $service['id'],
-                    'start_hours' => $service['start_hours'],
-                    'end_hours' => $service['end_hours'],
+                $visitIntervals[$visitService['staff_id']][] = [
+                    'custom_id' => $visitService['custom_id'],
+                    'start_hours' => $visitService['start_hours'],
+                    'end_hours' => $visitService['end_hours'],
                 ];
             }
         }
@@ -104,7 +103,7 @@ class HomeService
                 foreach ($staff['visits'] as $visitIndex => $visit) {
                     foreach ($visitIntervals[$staff['id']] as $lastInterval) {
                         if (
-                            $visit['id'] != $lastInterval['id']
+                            $visit['custom_id'] != $lastInterval['custom_id']
                             && strtotime($visit['start_hours']) >= strtotime($lastInterval['start_hours'])
                             && strtotime($visit['end_hours']) <= strtotime($lastInterval['end_hours'])
                         ) {

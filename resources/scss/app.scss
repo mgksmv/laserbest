@@ -96,88 +96,45 @@
       }
     }
 
-    /*&__status {
-      &__waiting {
-        .timeline-table__visit-time {
-          background: #1ab394;
-
-          .timeline-table__icon {
-            background-image: url('@/assets/images/patients-item-time-icon-waiting.svg');
-            filter: brightness(0) invert(1);
-          }
-        }
-
-        .timeline-table__visit-description {
-          background: rgb(212, 250, 239);
-        }
+    &.not-came {
+      .timeline-table__visit-time {
+        background: #996049;
       }
 
-      &__confirmed {
-        .timeline-table__visit-time {
-          background: rgb(161, 149, 244);
+      .timeline-table__visit-description {
+        background: #FFA07A;
+      }
+    }
 
-          .timeline-table__icon {
-            background-image: url('@/assets/images/patients-item-time-icon-confirmed.svg');
-          }
-        }
-
-        .timeline-table__visit-description {
-          background: rgb(220, 212, 250);
-        }
+    &.expected {
+      .timeline-table__visit-time {
+        background: #99955C;
       }
 
-      &__completed {
-        .timeline-table__visit-time {
-          background: rgb(238, 138, 95);
+      .timeline-table__visit-description {
+        background: #FFF99A;
+      }
+    }
 
-          .timeline-table__icon {
-            background-image: url('@/assets/images/patients-item-time-icon-completed.svg');
-          }
-        }
-
-        .timeline-table__visit-description {
-          background: rgb(245, 193, 170);
-        }
+    &.came {
+      .timeline-table__visit-time {
+        background: #627D96;
       }
 
-      &__cancelled {
-        .timeline-table__visit-time {
-          background: rgb(241, 148, 170);
+      .timeline-table__visit-description {
+        background: #A4D1FB;
+      }
+    }
 
-          .timeline-table__icon {
-            background-image: url('@/assets/images/patients-item-time-icon-cancelled.svg');
-          }
-        }
-
-        .timeline-table__visit-description {
-          background: rgb(246, 181, 196);
-        }
+    &.finished {
+      .timeline-table__visit-time {
+        background: #568F56;
       }
 
-      &__warned {
-        .timeline-table__visit-time {
-          background: rgb(238, 202, 107);
-
-          .timeline-table__icon {
-            background-image: url('@/assets/images/patients-item-time-icon-warned.svg');
-          }
-        }
-
-        .timeline-table__visit-description {
-          background: rgb(252, 238, 211);
-        }
+      .timeline-table__visit-description {
+        background: #90EE90;
       }
-    }*/
-
-    /*&:hover {
-            height: 100% !important;
-            overflow: visible;
-            z-index: 11;
-            box-shadow: 0px 0px 5px 1px rgba(0,0,0,.4);
-            & > * {
-                opacity: 1;
-            }
-        }*/
+    }
   }
 
   &__visit-time {
