@@ -1,19 +1,18 @@
 <script setup lang="ts">
-import InputError from '@/components/InputError.vue';
+import { ref } from 'vue';
+import { Head, useForm } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 import SettingsLayout from '@/layouts/settings/Layout.vue';
-import { Head, useForm } from '@inertiajs/vue3';
-import { ref } from 'vue';
-
 import HeadingSmall from '@/components/HeadingSmall.vue';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { type BreadcrumbItem } from '@/types';
+import FormLabel from '@/components/form/FormLabel.vue';
+import Button from 'primevue/button';
+import InputText from 'primevue/inputtext';
+import Message from 'primevue/message';
 
 const breadcrumbItems: BreadcrumbItem[] = [
     {
-        title: 'Password settings',
+        title: 'Пароль',
         href: '/settings/password',
     },
 ];
@@ -52,56 +51,80 @@ const updatePassword = () => {
 
 <template>
     <AppLayout :breadcrumbs="breadcrumbItems">
-        <Head title="Password settings" />
+        <Head title="Пароль" />
 
         <SettingsLayout>
             <div class="space-y-6">
-                <HeadingSmall title="Update password" description="Ensure your account is using a long, random password to stay secure" />
+                <HeadingSmall
+                    title="Изменить пароль"
+                    description="Убедитесь, что Вы используете длинный и надёжный пароль"
+                />
 
                 <form @submit.prevent="updatePassword" class="space-y-6">
                     <div class="grid gap-2">
-                        <Label for="current_password">Current password</Label>
-                        <Input
+                        <FormLabel for-id="current_password" required>Текущий пароль</FormLabel>
+                        <InputText
                             id="current_password"
                             ref="currentPasswordInput"
                             v-model="form.current_password"
                             type="password"
-                            class="mt-1 block w-full"
                             autocomplete="current-password"
-                            placeholder="Current password"
+                            placeholder="Введите текущий пароль"
+                            required
                         />
-                        <InputError :message="form.errors.current_password" />
+                        <Message
+                            v-if="form.errors?.current_password"
+                            severity="error"
+                            variant="simple"
+                            size="small"
+                        >
+                            {{ form.errors?.current_password }}
+                        </Message>
                     </div>
 
                     <div class="grid gap-2">
-                        <Label for="password">New password</Label>
-                        <Input
+                        <FormLabel for-id="password" required>Новый пароль</FormLabel>
+                        <InputText
                             id="password"
                             ref="passwordInput"
                             v-model="form.password"
                             type="password"
-                            class="mt-1 block w-full"
                             autocomplete="new-password"
-                            placeholder="New password"
+                            placeholder="Введите новый пароль"
+                            required
                         />
-                        <InputError :message="form.errors.password" />
+                        <Message
+                            v-if="form.errors?.password"
+                            severity="error"
+                            variant="simple"
+                            size="small"
+                        >
+                            {{ form.errors?.password }}
+                        </Message>
                     </div>
 
                     <div class="grid gap-2">
-                        <Label for="password_confirmation">Confirm password</Label>
-                        <Input
+                        <FormLabel for-id="password_confirmation" required>Подтвердите пароль</FormLabel>
+                        <InputText
                             id="password_confirmation"
                             v-model="form.password_confirmation"
                             type="password"
-                            class="mt-1 block w-full"
                             autocomplete="new-password"
-                            placeholder="Confirm password"
+                            placeholder="Введите новый пароль ещё раз"
+                            required
                         />
-                        <InputError :message="form.errors.password_confirmation" />
+                        <Message
+                            v-if="form.errors?.password_confirmation"
+                            severity="error"
+                            variant="simple"
+                            size="small"
+                        >
+                            {{ form.errors?.password_confirmation }}
+                        </Message>
                     </div>
 
                     <div class="flex items-center gap-4">
-                        <Button :disabled="form.processing">Save password</Button>
+                        <Button :disabled="form.processing" type="submit">Сохранить</Button>
 
                         <Transition
                             enter-active-class="transition ease-in-out"

@@ -10,6 +10,10 @@ interface Props {
 }
 
 const handleLogout = () => {
+    if (!confirm('Вы уверены, что хотите выйти?')) {
+        return;
+    }
+
     router.flushAll();
 };
 
@@ -25,17 +29,17 @@ defineProps<Props>();
     <DropdownMenuSeparator />
     <DropdownMenuGroup>
         <DropdownMenuItem :as-child="true">
-            <Link class="block w-full" :href="route('profile.edit')" prefetch as="button">
+            <Link class="block w-full cursor-pointer" :href="route('profile.edit')" prefetch as="button">
                 <Settings class="mr-2 h-4 w-4" />
-                Settings
+                Настройки
             </Link>
         </DropdownMenuItem>
     </DropdownMenuGroup>
     <DropdownMenuSeparator />
     <DropdownMenuItem :as-child="true">
-        <Link class="block w-full" method="post" :href="route('logout')" @click="handleLogout" as="button">
+        <Link class="block w-full cursor-pointer" method="post" :href="route('logout')" @click="handleLogout" as="button">
             <LogOut class="mr-2 h-4 w-4" />
-            Log out
+            Выйти
         </Link>
     </DropdownMenuItem>
 </template>
