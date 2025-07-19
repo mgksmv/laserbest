@@ -31,7 +31,7 @@ const breadcrumbs: BreadcrumbItem[] = [
 const params = new URLSearchParams(location.search);
 
 const salonId = ref<string>(params.get('salonId') ?? props.salons[0].id);
-const date = ref<Date | null>(params.get('date') ? new Date(params.get('date')) : null);
+const date = ref<Date>(params.get('date') ? new Date(params.get('date')) : new Date());
 
 const visitModal = useModal();
 
