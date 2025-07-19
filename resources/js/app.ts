@@ -41,9 +41,9 @@ createInertiaApp({
 
                 return () => h('div', [
                     h(App, props),
-                    h(Toast, { position: 'bottom-right' })
+                    h(Toast, { position: 'bottom-right' }),
                 ]);
-            }
+            },
         };
 
         createApp(Root)
@@ -57,6 +57,43 @@ createInertiaApp({
                     },
                 },
                 pt: globalPt,
+                locale: {
+                    dayNames: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота'],
+                    dayNamesShort: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+                    dayNamesMin: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
+                    monthNames: [
+                        'Январь',
+                        'Февраль',
+                        'Март',
+                        'Апрель',
+                        'Май',
+                        'Июнь',
+                        'Июль',
+                        'Август',
+                        'Сентябрь',
+                        'Октябрь',
+                        'Ноябрь',
+                        'Декабрь',
+                    ],
+                    monthNamesShort: [
+                        'Янв',
+                        'Фев',
+                        'Мар',
+                        'Апр',
+                        'Май',
+                        'Июн',
+                        'Июл',
+                        'Авг',
+                        'Сен',
+                        'Окт',
+                        'Ноя',
+                        'Дек',
+                    ],
+                    today: 'Сегодня',
+                    weekHeader: 'Нед',
+                    firstDayOfWeek: 1,
+                    dateFormat: 'dd/mm/yy',
+                },
             })
             .use(ToastService)
             .mount(el);

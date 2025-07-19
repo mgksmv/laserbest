@@ -3,7 +3,7 @@
 namespace App\Services;
 
 use App\Enums\VisitStatus;
-use Illuminate\Support\Carbon;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 
 class HomeService
@@ -23,8 +23,16 @@ class HomeService
         return $timeIntervals;
     }
 
-    public function getBookStaffData(array $bookStaff, array $visits, string $startTime, int $multiplier): array
+    public function getBookStaffData(
+        array  $bookStaff,
+        array  $visits,
+        Carbon $date,
+        string $startTime,
+        int    $multiplier,
+    ): array
     {
+        $startTime = $date->setTimeFromTimeString($startTime);
+
         $visitIntervals = [];
 
         foreach ($visits as $visit) {

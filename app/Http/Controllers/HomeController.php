@@ -4,18 +4,22 @@ namespace App\Http\Controllers;
 
 use App\Services\CService;
 use App\Services\HomeService;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class HomeController extends Controller
 {
     public function __construct(
-        protected CService $CService,
+        protected CService    $CService,
         protected HomeService $homeService,
     ) {}
 
-    public function index(): Response
+    public function index(Request $request): Response
     {
+        $date = Carbon::parse($request->get('date') ?? now());
+
         $startTime = '08:00';
         $endTime = '20:00';
         $partsOfHour = 4;
@@ -26,16 +30,22 @@ class HomeController extends Controller
 
         $timeIntervals = $this->homeService->getTimeIntervals($startTime, $endTime);
 
-        $visits = $this->CService->getVisits()->json()['Parameters'] ?? [];
-        $bookStaff = $this->CService->getBookStaff()->json()['Parameters'] ?? [];
-        $bookStaff = $this->homeService->getBookStaffData($bookStaff, $visits, $startTime, $multiplier);
+        $visitsResponse = $this->CService->getVisits($date, $date)->json()['Parameters'] ?? [];
+        $bookStaffResponse = $this->CService->getBookStaff($date)->json()['Parameters'] ?? [];
+        $bookStaff = $this->homeService->getBookStaffData(
+            $bookStaffResponse,
+            $visitsResponse,
+            $date,
+            $startTime,
+            $multiplier,
+        );
 
-        return Inertia::render('Home', compact(
+        return Inertia::render('Home', compact([
             'timeIntervals',
             'partsOfHour',
             'increaseInMinutes',
             'slotsInOneHour',
             'bookStaff',
-        ));
+        ]));
     }
 }

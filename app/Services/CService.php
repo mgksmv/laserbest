@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Carbon\Carbon;
 use Illuminate\Http\Client\Response;
 use Illuminate\Support\Facades\Http;
 
@@ -9,38 +10,38 @@ class CService
 {
     const string BASE_URL = 'http://37.77.107.236:1818/TEST/hs/api/v1';
 
-    public function getBookStaff(?string $datetime = null): Response
+    public function getBookStaff(?Carbon $datetime = null): Response
     {
         if (!$datetime) {
-            $datetime = now()->format('Y-m-d\TH:i');
+            $datetime = now();
         }
 
         return Http::withHeaders([
             'apikey' => config('services.c.key'),
         ])
             ->withBasicAuth(config('services.c.login'), config('services.c.password'))
-            ->get(self::BASE_URL . '/book_staff/33893788-d61c-11ee-9a91-0050568319a1', [
-                'datetime' => $datetime,
+            ->get(self::BASE_URL . '/book_staff/9a5784d1-3a01-11ef-a31f-74563c9c055c', [
+                'datetime' => $datetime->setTime(0, 0)->format('Y-m-d\TH:i'),
             ]);
     }
 
-    public function getVisits(?string $startDate = null, ?string $endDate = null): Response
+    public function getVisits(?Carbon $startDate = null, ?Carbon $endDate = null): Response
     {
         if (!$startDate) {
-            $startDate = now()->setTime(8, 0)->format('Y-m-d\TH:i');
+            $startDate = now();
         }
 
         if (!$endDate) {
-            $endDate = now()->setTime(20, 0)->format('Y-m-d\TH:i');
+            $endDate = now();
         }
 
         return Http::withHeaders([
             'apikey' => config('services.c.key'),
         ])
             ->withBasicAuth(config('services.c.login'), config('services.c.password'))
-            ->get(self::BASE_URL . '/visites/33893788-d61c-11ee-9a91-0050568319a1', [
-                'start_date' => $startDate,
-                'end_date' => $endDate,
+            ->get(self::BASE_URL . '/visites/9a5784d1-3a01-11ef-a31f-74563c9c055c', [
+                'start_date' => $startDate->setTime(8, 0)->format('Y-m-d\TH:i'),
+                'end_date' => $endDate->setTime(20, 0)->format('Y-m-d\TH:i'),
             ]);
     }
 }
