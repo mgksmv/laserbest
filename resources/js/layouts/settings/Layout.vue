@@ -27,7 +27,10 @@ const currentPath = page.props.ziggy?.location ? new URL(page.props.ziggy.locati
 
 <template>
     <div class="px-4 py-6">
-        <Heading title="Настройки" description="Управление настройками аккаунта" />
+        <Heading
+            title="Настройки"
+            description="Управление настройками аккаунта"
+        />
 
         <div class="flex flex-col space-y-8 md:space-y-0 lg:flex-row lg:space-y-0 lg:space-x-12">
             <aside class="w-full md:max-w-2xl lg:w-48">

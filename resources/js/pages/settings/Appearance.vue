@@ -20,7 +20,10 @@ const breadcrumbItems: BreadcrumbItem[] = [
 
         <SettingsLayout>
             <div class="space-y-6">
-                <HeadingSmall title="Тема" description="Изменить тему" />
+                <HeadingSmall
+                    title="Тема"
+                    description="Изменить тему"
+                />
                 <AppearanceTabs />
             </div>
         </SettingsLayout>

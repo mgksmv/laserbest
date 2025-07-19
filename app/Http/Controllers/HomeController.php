@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Salon;
 use App\Services\CService;
 use App\Services\HomeService;
 use Carbon\Carbon;
@@ -20,6 +21,9 @@ class HomeController extends Controller
     {
         $date = Carbon::parse($request->get('date') ?? now());
 
+        $salons = Salon::query()->orderBy('name')->get();
+        $salonId = $request->get('salonId') ?? $salons->first()->id;
+
         $startTime = '08:00';
         $endTime = '20:00';
         $partsOfHour = 4;
@@ -30,8 +34,8 @@ class HomeController extends Controller
 
         $timeIntervals = $this->homeService->getTimeIntervals($startTime, $endTime);
 
-        $visitsResponse = $this->CService->getVisits($date, $date)->json()['Parameters'] ?? [];
-        $bookStaffResponse = $this->CService->getBookStaff($date)->json()['Parameters'] ?? [];
+        $visitsResponse = $this->CService->getVisits($salonId, $date, $date)->json()['Parameters'] ?? [];
+        $bookStaffResponse = $this->CService->getBookStaff($salonId, $date)->json()['Parameters'] ?? [];
         $bookStaff = $this->homeService->getBookStaffData(
             $bookStaffResponse,
             $visitsResponse,
@@ -41,6 +45,7 @@ class HomeController extends Controller
         );
 
         return Inertia::render('Home', compact([
+            'salons',
             'timeIntervals',
             'partsOfHour',
             'increaseInMinutes',

@@ -9,9 +9,12 @@ import { useModal } from '@/composables/useModal';
 import { BookStaff } from '@/types/bookStaff';
 import { Visit, VisitStatus } from '@/types/visit.d';
 import DatePicker from 'primevue/datepicker';
+import Select from 'primevue/select';
+import IftaLabel from 'primevue/iftalabel';
 
 const props = defineProps<{
-    timeIntervals: any,
+    salons: any,
+    timeIntervals: string[],
     partsOfHour: number,
     increaseInMinutes: number,
     slotsInOneHour: number,
@@ -26,13 +29,19 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 const params = new URLSearchParams(location.search);
+
+const salonId = ref<string>(params.get('salonId') ?? props.salons[0].id);
 const date = ref<Date | null>(params.get('date') ? new Date(params.get('date')) : null);
 
 const visitModal = useModal();
 
+watch(salonId, (value) => {
+    router.get(route('home'), { salonId: value, date: moment(date.value).format('YYYY-MM-DD') });
+});
+
 watch(date, (value) => {
     date.value = value;
-    router.get(route('home'), { date: moment(value).format('YYYY-MM-DD') });
+    router.get(route('home'), { salonId: salonId.value, date: moment(value).format('YYYY-MM-DD') });
 });
 
 function getHoursFromTimeInterval(timeInterval: string) {
@@ -200,7 +209,20 @@ function handleVisitMouseleave(event: MouseEvent, height: number) {
                 </div>
             </div>
 
-            <div class="w-full">
+            <div class="w-full flex flex-col gap-4">
+                <IftaLabel>
+                    <Select
+                        id="salon"
+                        v-model="salonId"
+                        :options="salons"
+                        option-label="name"
+                        option-value="id"
+                        placeholder="Выберите салон"
+                        class="w-full md:w-56"
+                    />
+                    <label for="salon">Салон</label>
+                </IftaLabel>
+
                 <DatePicker
                     v-model="date"
                     inline

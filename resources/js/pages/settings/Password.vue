@@ -60,9 +60,17 @@ const updatePassword = () => {
                     description="Убедитесь, что Вы используете длинный и надёжный пароль"
                 />
 
-                <form @submit.prevent="updatePassword" class="space-y-6">
+                <form
+                    class="space-y-6"
+                    @submit.prevent="updatePassword"
+                >
                     <div class="grid gap-2">
-                        <FormLabel for-id="current_password" required>Текущий пароль</FormLabel>
+                        <FormLabel
+                            for-id="current_password"
+                            required
+                        >
+                            Текущий пароль
+                        </FormLabel>
                         <InputText
                             id="current_password"
                             ref="currentPasswordInput"
@@ -83,7 +91,12 @@ const updatePassword = () => {
                     </div>
 
                     <div class="grid gap-2">
-                        <FormLabel for-id="password" required>Новый пароль</FormLabel>
+                        <FormLabel
+                            for-id="password"
+                            required
+                        >
+                            Новый пароль
+                        </FormLabel>
                         <InputText
                             id="password"
                             ref="passwordInput"
@@ -104,7 +117,12 @@ const updatePassword = () => {
                     </div>
 
                     <div class="grid gap-2">
-                        <FormLabel for-id="password_confirmation" required>Подтвердите пароль</FormLabel>
+                        <FormLabel
+                            for-id="password_confirmation"
+                            required
+                        >
+                            Подтвердите пароль
+                        </FormLabel>
                         <InputText
                             id="password_confirmation"
                             v-model="form.password_confirmation"
@@ -124,7 +142,12 @@ const updatePassword = () => {
                     </div>
 
                     <div class="flex items-center gap-4">
-                        <Button :disabled="form.processing" type="submit">Сохранить</Button>
+                        <Button
+                            :disabled="form.processing"
+                            type="submit"
+                        >
+                            Сохранить
+                        </Button>
 
                         <Transition
                             enter-active-class="transition ease-in-out"
@@ -132,7 +155,12 @@ const updatePassword = () => {
                             leave-active-class="transition ease-in-out"
                             leave-to-class="opacity-0"
                         >
-                            <p v-show="form.recentlySuccessful" class="text-sm text-neutral-600">Saved.</p>
+                            <p
+                                v-show="form.recentlySuccessful"
+                                class="text-sm text-neutral-600"
+                            >
+                                Saved.
+                            </p>
                         </Transition>
                     </div>
                 </form>

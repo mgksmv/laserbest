@@ -11,8 +11,14 @@ withDefaults(
 </script>
 
 <template>
-    <label :for="forId" class="text-sm font-medium">
+    <label
+        :for="forId"
+        class="text-sm font-medium"
+    >
         <slot />
-        <span v-if="required" class="text-red-400 ms-1">*</span>
+        <span
+            v-if="required"
+            class="text-red-400 ms-1"
+        >*</span>
     </label>
 </template>

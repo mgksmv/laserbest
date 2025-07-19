@@ -21,7 +21,7 @@ createServer((page) =>
                     location: new URL(page.props.ziggy.location),
                 }),
     }),
-    { cluster: true },
+{ cluster: true },
 );
 
 function resolvePage(name: string) {

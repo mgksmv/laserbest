@@ -48,6 +48,7 @@ export default [
                 indent: ['error', 4],
                 semi: ['error', 'always'],
                 'linebreak-style': ['error', 'unix'],
+                '@typescript-eslint/no-unused-vars': 'off',
             },
         },
     ),

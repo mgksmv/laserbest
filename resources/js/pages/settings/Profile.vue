@@ -44,11 +44,22 @@ const submit = () => {
 
         <SettingsLayout>
             <div class="flex flex-col space-y-6">
-                <HeadingSmall title="Профиль" description="Изменение данных профиля" />
+                <HeadingSmall
+                    title="Профиль"
+                    description="Изменение данных профиля"
+                />
 
-                <form @submit.prevent="submit" class="space-y-6">
+                <form
+                    class="space-y-6"
+                    @submit.prevent="submit"
+                >
                     <div class="grid gap-2">
-                        <FormLabel for-id="name" required>Имя</FormLabel>
+                        <FormLabel
+                            for-id="name"
+                            required
+                        >
+                            Имя
+                        </FormLabel>
                         <InputText
                             id="name"
                             v-model="form.name"
@@ -69,7 +80,12 @@ const submit = () => {
                     </div>
 
                     <div class="grid gap-2">
-                        <FormLabel for-id="email" required>Электронная почта</FormLabel>
+                        <FormLabel
+                            for-id="email"
+                            required
+                        >
+                            Электронная почта
+                        </FormLabel>
                         <InputText
                             id="email"
                             v-model="form.email"
@@ -108,7 +124,12 @@ const submit = () => {
                     </div>-->
 
                     <div class="flex items-center gap-4">
-                        <Button :disabled="form.processing" type="submit">Сохранить</Button>
+                        <Button
+                            :disabled="form.processing"
+                            type="submit"
+                        >
+                            Сохранить
+                        </Button>
 
                         <Transition
                             enter-active-class="transition ease-in-out"
@@ -116,7 +137,10 @@ const submit = () => {
                             leave-active-class="transition ease-in-out"
                             leave-to-class="opacity-0"
                         >
-                            <p v-show="form.recentlySuccessful" class="text-sm text-neutral-600">
+                            <p
+                                v-show="form.recentlySuccessful"
+                                class="text-sm text-neutral-600"
+                            >
                                 Изменения сохранены.
                             </p>
                         </Transition>
