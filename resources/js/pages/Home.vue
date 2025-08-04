@@ -32,6 +32,7 @@ const params = new URLSearchParams(location.search);
 
 const salonId = ref<string>(params.get('salonId') ?? props.salons[0].id);
 const date = ref<Date>(params.get('date') ? new Date(params.get('date')) : new Date());
+const currentStaffId = ref<string | null>(null);
 
 const visitModal = useModal();
 
@@ -87,6 +88,18 @@ function getVisitClasses(visit: Visit) {
     }
 
     return classList;
+}
+
+function canBookRecordInTime(staff: any, time: string) {
+    const checkDate = moment(date.value).format('YYYY-MM-DD');
+    const fullTime = moment(`${checkDate} ${time}`, 'YYYY-MM-DD HH:mm').format('YYYY-MM-DDTHH:mm:ss');
+
+    return staff.upcoming_times?.includes(fullTime);
+}
+
+function handleSlotClick(staffId: string) {
+    currentStaffId.value = staffId;
+    visitModal.open();
 }
 
 function handleVisitMouseenter(event: MouseEvent) {
@@ -152,7 +165,8 @@ function handleVisitMouseleave(event: MouseEvent, height: number) {
                                         v-for="slot in slotsInOneHour"
                                         :key="slot"
                                         class="noselect"
-                                        @click="visitModal.open"
+                                        :class="{ disabled: !canBookRecordInTime(staff, getSlotTime(timeInterval, slot - 1)) }"
+                                        @click="handleSlotClick(staff.id)"
                                     >
                                         {{ getSlotTime(timeInterval, slot - 1) }}
                                     </span>
@@ -234,6 +248,8 @@ function handleVisitMouseleave(event: MouseEvent, height: number) {
 
         <VisitModal
             v-if="visitModal.isOpened.value"
+            :salon-id="salonId"
+            :staff-id="currentStaffId"
             @close-modal="visitModal.close"
         />
     </AppLayout>

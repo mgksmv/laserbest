@@ -22,6 +22,7 @@ class HomeController extends Controller
         $date = Carbon::parse($request->get('date') ?? now());
 
         $salons = Salon::query()->orderBy('name')->get();
+
         $salonId = $request->get('salonId') ?? $salons->first()->id;
 
         $startTime = '08:00';
@@ -36,6 +37,7 @@ class HomeController extends Controller
 
         $visitsResponse = $this->CService->getVisits($salonId, $date, $date)->json()['Parameters'] ?? [];
         $bookStaffResponse = $this->CService->getBookStaff($salonId, $date)->json()['Parameters'] ?? [];
+
         $bookStaff = $this->homeService->getBookStaffData(
             $bookStaffResponse,
             $visitsResponse,

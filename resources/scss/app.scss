@@ -383,4 +383,11 @@
   z-index: 50;
 }
 
+.disabled {
+  background-color: #DCDDDF;
+  color: #DCDDDF !important;
+  box-shadow: none !important;
+  pointer-events: none;
+}
+
 @import "primevue";

@@ -1,5 +1,25 @@
 <script setup lang="ts">
+import { onMounted, ref } from 'vue';
+import Select from 'primevue/select';
+
+const props = defineProps<{
+    salonId: string;
+    staffId: string;
+}>();
+
 const emit = defineEmits(['closeModal']);
+
+const services = ref();
+const serviceId = ref();
+const isLoading = ref(true);
+
+onMounted(async () => {
+    const response = await fetch(`/visit-modal?salonId=${props.salonId}&staffId=${props.staffId}`);
+    const data = await response.json();
+
+    services.value = data.services;
+    isLoading.value = false;
+});
 </script>
 
 <template>
@@ -16,6 +36,18 @@ const emit = defineEmits(['closeModal']);
                         <div class="modal-window__block">
                             <div class="flex justify-center items-center">
                                 <h1>Создание визита</h1>
+                            </div>
+
+                            <div v-if="!isLoading">
+                                <Select
+                                    v-model="serviceId"
+                                    :options="services"
+                                    option-label="title"
+                                    option-value="id"
+                                    placeholder="Выберите услугу"
+                                    filter
+                                    class="w-full md:w-56"
+                                />
                             </div>
                         </div>
                     </div>
