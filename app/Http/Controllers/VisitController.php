@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\CService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class VisitController extends Controller
@@ -11,7 +12,7 @@ class VisitController extends Controller
         protected CService $CService,
     ) {}
 
-    public function getModalData(Request $request)
+    public function getModalData(Request $request): JsonResponse
     {
         $services = $this
             ->CService
